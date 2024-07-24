@@ -45,6 +45,12 @@ export async function status(actionArguments: StatusActionArguments) {
     current += total / MAX_NUM_POLLS
     progressBar.update(current)
 
+    core.debug(`Status attempt #${numPolls} response...`)
+    core.debug(`${JSON.stringify(results, null, 2)}`)
+    core.debug('\n')
+
+    console.log(results)
+
     let haltingCondition =
       (results.result.uploadStatus === 'processed' && !doWaitForAdditionalInfo) ||
       (results.result.uploadStatus === 'processed' &&

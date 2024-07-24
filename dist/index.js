@@ -31209,6 +31209,10 @@ async function status(actionArguments) {
         pollHistory.push(results);
         current += total / MAX_NUM_POLLS;
         progressBar.update(current);
+        core.debug(`Status attempt #${numPolls} response...`);
+        core.debug(`${JSON.stringify(results, null, 2)}`);
+        core.debug('\n');
+        console.log(results);
         let haltingCondition = (results.result.uploadStatus === 'processed' && !doWaitForAdditionalInfo) ||
             (results.result.uploadStatus === 'processed' &&
                 doWaitForAdditionalInfo &&
@@ -34284,7 +34288,7 @@ module.exports = JSON.parse('{"name":"dotenv","version":"16.4.5","description":"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"maxStatusPollAttempts":{"type":"number","minimum":0,"maximum":5},"statusAttemptInterval":{"type":"number","minimum":5000},"bomRecordId":{"type":"string"},"fetchPackageInfo":{"type":"boolean"},"fetchVulnerabilityInfo":{"type":"boolean"},"secrets":{"required":["snSbomUser","snSbomPassword","snInstanceUrl"],"type":"object","properties":{"snSbomUser":{"type":"string"},"snSbomPassword":{"type":"string"},"snInstanceUrl":{"type":"string"}}}},"required":["bomRecordId","maxStatusPollAttempts","statusAttemptInterval"],"additionalProperties":false}');
+module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"maxStatusPollAttempts":{"type":"number","minimum":0,"maximum":5},"statusAttemptInterval":{"type":"number","minimum":5000},"bomRecordId":{"type":"string","minLength":1},"fetchPackageInfo":{"type":"boolean"},"fetchVulnerabilityInfo":{"type":"boolean"},"secrets":{"required":["snSbomUser","snSbomPassword","snInstanceUrl"],"type":"object","properties":{"snSbomUser":{"type":"string","minLength":1},"snSbomPassword":{"type":"string","minLength":1},"snInstanceUrl":{"type":"string","minLength":1}}}},"required":["bomRecordId","maxStatusPollAttempts","statusAttemptInterval"],"additionalProperties":false}');
 
 /***/ })
 

@@ -12,7 +12,8 @@
       "minimum": 5000
     },
     "bomRecordId": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1
     },
     "fetchPackageInfo": {
       "type": "boolean"
@@ -25,13 +26,16 @@
       "type": "object",
       "properties": {
         "snSbomUser": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "snSbomPassword": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "snInstanceUrl": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         }
       }
     }
