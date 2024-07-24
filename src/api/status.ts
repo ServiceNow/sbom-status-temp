@@ -34,6 +34,7 @@ export async function status(actionArguments: StatusActionArguments) {
   let processingComplete = false
 
   let doWaitForAdditionalInfo = actionArguments.fetchPackageInfo || actionArguments.fetchVulnerabilityInfo
+  let alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = false
 
   while (numPolls++ < MAX_NUM_POLLS) {
     let results = await statusUtils._performStatus(
@@ -50,6 +51,18 @@ export async function status(actionArguments: StatusActionArguments) {
     core.debug('\n')
 
     console.log(results)
+    if (
+      results.result.additionalInfoStatus === 'not_requested' &&
+      doWaitForAdditionalInfo &&
+      !alreadyEmittedAdditionalIntelligenceDiscrepancyWarning
+    ) {
+      core.warning(
+        'Additional vulnerability or package intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.'
+      )
+      doWaitForAdditionalInfo = false
+      alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = true
+      break
+    }
 
     let haltingCondition =
       (results.result.uploadStatus === 'processed' && !doWaitForAdditionalInfo) ||
