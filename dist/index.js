@@ -31220,8 +31220,6 @@ async function status(actionArguments) {
             core.warning('Additional vulnerability or package intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.');
             doWaitForAdditionalInfo = false;
             alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = true;
-            processingComplete = true;
-            break;
         }
         let haltingCondition = (results.result.uploadStatus === 'processed' && !doWaitForAdditionalInfo) ||
             (results.result.uploadStatus === 'processed' &&

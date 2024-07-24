@@ -61,8 +61,6 @@ export async function status(actionArguments: StatusActionArguments) {
       )
       doWaitForAdditionalInfo = false
       alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = true
-      processingComplete = true
-      break
     }
 
     let haltingCondition =
