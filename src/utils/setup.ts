@@ -28,12 +28,19 @@ export function _actionArguments(): StatusActionArguments {
   maxStatusPollAttempts = maxStatusPollAttempts <= 0 ? 5 : maxStatusPollAttempts
   statusAttemptInterval = statusAttemptInterval <= 1000 ? 10000 : statusAttemptInterval
 
+  let bomRecordId = core.getInput('bomRecordId')
+  if (bomRecordId.trim().length === 0) {
+    let failureMessage = 'The bomRecordId action input is empty. Please provide a valid bomRecordId.'
+    core.setFailed(failureMessage)
+    throw new Error(failureMessage)
+  }
+
   return {
     secrets: _secretArguments(),
-    bomRecordId: core.getInput('bomRecordId'),
     fetchPackageInfo: core.getInput('fetchPackageInfo') === 'true',
     fetchVulnerabilityInfo: core.getInput('fetchVulnerabilityInfo') === 'true',
-    maxStatusPollAttempts: maxStatusPollAttempts,
-    statusAttemptInterval: statusAttemptInterval
+    maxStatusPollAttempts,
+    statusAttemptInterval,
+    bomRecordId
   }
 }

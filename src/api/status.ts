@@ -154,7 +154,7 @@ export async function status(actionArguments: StatusActionArguments) {
       await core.summary
         .addSeparator()
         .addQuote(
-          'ℹ️ Assert the fetchVulnerabilityInfo or fetchPackageInfo action inputs to retrieve vulnerability or package intelligence data.'
+          'ℹ️ If the SBOM was uploaded to ServiceNow via the SBOM Upload Action, additional package or vulnerability intelligence information can be requested. The SBOM Status API can retrieve the associated package or vulnerability information if the fetchPackageInfo or fetchVulnerabilityInfo action inputs are set to true.'
         )
         .write()
     }

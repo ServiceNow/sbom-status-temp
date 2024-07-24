@@ -31300,7 +31300,7 @@ async function status(actionArguments) {
         if (!doWaitForAdditionalInfo) {
             await core.summary
                 .addSeparator()
-                .addQuote('ℹ️ Assert the fetchVulnerabilityInfo or fetchPackageInfo action inputs to retrieve vulnerability or package intelligence data.')
+                .addQuote('ℹ️ If the SBOM was uploaded to ServiceNow via the SBOM Upload Action, additional package or vulnerability intelligence information can be requested. The SBOM Status API can retrieve the associated package or vulnerability information if the fetchPackageInfo or fetchVulnerabilityInfo action inputs are set to true.')
                 .write();
         }
     }
@@ -31484,13 +31484,19 @@ function _actionArguments() {
     let statusAttemptInterval = Number(core.getInput('statusAttemptInterval'));
     maxStatusPollAttempts = maxStatusPollAttempts <= 0 ? 5 : maxStatusPollAttempts;
     statusAttemptInterval = statusAttemptInterval <= 1000 ? 10000 : statusAttemptInterval;
+    let bomRecordId = core.getInput('bomRecordId');
+    if (bomRecordId.trim().length === 0) {
+        let failureMessage = 'The bomRecordId action input is empty. Please provide a valid bomRecordId.';
+        core.setFailed(failureMessage);
+        throw new Error(failureMessage);
+    }
     return {
         secrets: _secretArguments(),
-        bomRecordId: core.getInput('bomRecordId'),
         fetchPackageInfo: core.getInput('fetchPackageInfo') === 'true',
         fetchVulnerabilityInfo: core.getInput('fetchVulnerabilityInfo') === 'true',
-        maxStatusPollAttempts: maxStatusPollAttempts,
-        statusAttemptInterval: statusAttemptInterval
+        maxStatusPollAttempts,
+        statusAttemptInterval,
+        bomRecordId
     };
 }
 
