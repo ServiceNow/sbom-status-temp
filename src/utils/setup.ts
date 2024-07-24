@@ -31,7 +31,6 @@ export function _actionArguments(): StatusActionArguments {
   let bomRecordId = core.getInput('bomRecordId')
   if (bomRecordId.trim().length === 0) {
     let failureMessage = 'The bomRecordId action input is empty. Please provide a valid bomRecordId.'
-    core.setFailed(failureMessage)
     throw new Error(failureMessage)
   }
 

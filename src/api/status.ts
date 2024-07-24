@@ -78,10 +78,12 @@ export async function status(actionArguments: StatusActionArguments) {
     await sleep(actionArguments.statusAttemptInterval)
   }
 
+  let ultimatePoll: StatusApiResponseBody | undefined = pollHistory.pop()
+
   if (!processingComplete) {
     console.log('Timed out before completion...')
     await core.summary
-      .addSeparator()
+      .addRaw('**Last observed status state**: `' + ultimatePoll?.result.uploadStatus + '`')
       .addQuote(
         '⚠️️ The maximum status poll attempts has been reached. Please consider increasing the maximum number of poll attempts (maxStatusPollAttempts) or time between poll attempts (statusAttemptInterval) before re-running.'
       )
@@ -98,8 +100,6 @@ export async function status(actionArguments: StatusActionArguments) {
     core.setFailed('The maximum status poll attempts has been reached.')
     return
   }
-
-  let ultimatePoll: StatusApiResponseBody | undefined = pollHistory.pop()
 
   if (process.env.NODE_ENV !== 'test' && processingComplete) {
     let summary = core.summary

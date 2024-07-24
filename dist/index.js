@@ -31233,10 +31233,11 @@ async function status(actionArguments) {
         }
         await sleep(actionArguments.statusAttemptInterval);
     }
+    let ultimatePoll = pollHistory.pop();
     if (!processingComplete) {
         console.log('Timed out before completion...');
         await core.summary
-            .addSeparator()
+            .addRaw('**Last observed status state**: `' + ultimatePoll?.result.uploadStatus + '`')
             .addQuote('⚠️️ The maximum status poll attempts has been reached. Please consider increasing the maximum number of poll attempts (maxStatusPollAttempts) or time between poll attempts (statusAttemptInterval) before re-running.')
             .addHeading('Current Status Polling Configuration', 4)
             .addCodeBlock(JSON.stringify({
@@ -31248,7 +31249,6 @@ async function status(actionArguments) {
         core.setFailed('The maximum status poll attempts has been reached.');
         return;
     }
-    let ultimatePoll = pollHistory.pop();
     if (process.env.NODE_ENV !== 'test' && processingComplete) {
         let summary = core.summary
             .addHeading('SBOM Processing Results')
@@ -31487,7 +31487,6 @@ function _actionArguments() {
     let bomRecordId = core.getInput('bomRecordId');
     if (bomRecordId.trim().length === 0) {
         let failureMessage = 'The bomRecordId action input is empty. Please provide a valid bomRecordId.';
-        core.setFailed(failureMessage);
         throw new Error(failureMessage);
     }
     return {
