@@ -31299,7 +31299,7 @@ async function status(actionArguments) {
         }
         let rawApiResponse = `\`\`\`json
     
-    ${JSON.stringify(ultimatePoll?.result.uploadSummary, null, 2)}
+    ${JSON.stringify(ultimatePoll?.result.uploadSummary)}
     
     \`\`\`
     `;
