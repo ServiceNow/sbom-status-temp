@@ -23,12 +23,17 @@ export function _secretArguments(): ActionSecretArguments {
 }
 
 export function _actionArguments(): StatusActionArguments {
+  let maxStatusPollAttempts = Number(core.getInput('maxStatusPollAttempts'))
+  let statusAttemptInterval = Number(core.getInput('statusAttemptInterval'))
+  maxStatusPollAttempts = maxStatusPollAttempts <= 0 ? 5 : maxStatusPollAttempts
+  statusAttemptInterval = statusAttemptInterval <= 1000 ? 10000 : statusAttemptInterval
+
   return {
     secrets: _secretArguments(),
     bomRecordId: core.getInput('bomRecordId'),
-    maxStatusPollAttempts: Number(core.getInput('maxStatusPollAttempts')) ?? 5,
-    statusAttemptInterval: Number(core.getInput('statusAttemptInterval')) ?? 10000,
     fetchPackageInfo: core.getInput('fetchPackageInfo') === 'true',
-    fetchVulnerabilityInfo: core.getInput('fetchVulnerabilityInfo') === 'true'
+    fetchVulnerabilityInfo: core.getInput('fetchVulnerabilityInfo') === 'true',
+    maxStatusPollAttempts: maxStatusPollAttempts,
+    statusAttemptInterval: statusAttemptInterval
   }
 }
