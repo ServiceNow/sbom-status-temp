@@ -152,10 +152,9 @@ export async function status(actionArguments: StatusActionArguments) {
       ])
     }
 
-    let rawApiResponse = `\`\`\`json
-    
+    let rawApiResponse = `
+    \`\`\`json
     ${JSON.stringify(ultimatePoll?.result.uploadSummary)}
-    
     \`\`\`
     `
     await summary.addDetails('API Response', rawApiResponse).write()

@@ -31297,10 +31297,9 @@ async function status(actionArguments) {
                 ]
             ]);
         }
-        let rawApiResponse = `\`\`\`json
-    
+        let rawApiResponse = `
+    \`\`\`json
     ${JSON.stringify(ultimatePoll?.result.uploadSummary)}
-    
     \`\`\`
     `;
         await summary.addDetails('API Response', rawApiResponse).write();
