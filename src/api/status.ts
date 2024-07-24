@@ -51,6 +51,11 @@ export async function status(actionArguments: StatusActionArguments) {
     core.debug('\n')
 
     console.log(results)
+
+    if (results.result.status === 'error') {
+      throw new Error(`An error occurred: ${JSON.stringify(results.result, null, 2)}`)
+    }
+
     if (
       results.result.additionalInfoStatus === 'not_requested' &&
       doWaitForAdditionalInfo &&

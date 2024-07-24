@@ -20,6 +20,9 @@ export interface StatusApiResponseBody {
     additionalInfoStatus: string
     buildId: string
     uploadSummary?: StatusApiUploadSummaryResponseBody
+    statusCode?: number
+    status?: string
+    detail?: string
   }
 }
 
