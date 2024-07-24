@@ -1,0 +1,45 @@
+name: 'SBOM Status Action'
+description: 'An action to query the status of an uploaded SBOM document to ServiceNow.'
+inputs:
+  # Secrets
+  snSbomUser:
+    description: 'Platform Username.'
+    required: true
+  snSbomPassword:
+    description: 'Platform Password.'
+    required: true
+  snInstanceUrl:
+    description: 'The URL of the ServiceNow Platform instance.'
+    required: true
+
+  # Arguments
+  bomRecordId:
+    description: 'The BOM Record ID returned from the SBOM Upload API.'
+    required: true
+  maxStatusPollAttempts:
+    description: 'The maximum number of times the action is permitted to poll the ServiceNow instance for SBOM upload and processing status.'
+    required: false
+  statusAttemptInterval:
+    description: 'The time interval the action will wait between performing a subsequent status poll if previous attempts have not returned with a completed state.'
+    required: false
+  fetchPackageInfo:
+    description: 'Wait for additional package information.'
+    required: false
+  fetchVulnerabilityInfo:
+    description: 'Wait for additional vulnerability information.'
+    required: false
+
+outputs:
+  results:
+    description: 'The JSON stringified response from the status API.'
+  statusState:
+    description: 'The completion state of the underlying status API request.'
+    # complete: Indicates the action completed successfully
+    # timeout: Indicates the action encountered an error during execution.
+
+branding:
+  icon: 'refresh-ccw'
+  color: 'green'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
