@@ -61,6 +61,7 @@ export async function status(actionArguments: StatusActionArguments) {
       )
       doWaitForAdditionalInfo = false
       alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = true
+      processingComplete = true
       break
     }
 
@@ -117,7 +118,7 @@ export async function status(actionArguments: StatusActionArguments) {
           `${ultimatePoll?.result?.uploadSummary?.components?.total}`
         ]
       ])
-    if (actionArguments.fetchVulnerabilityInfo) {
+    if (actionArguments.fetchVulnerabilityInfo && ultimatePoll?.result.uploadSummary?.vulnerabilityInfo) {
       summary.addHeading('Vulnerability Information', 4).addTable([
         [
           { data: 'Critical', header: true },
@@ -135,7 +136,7 @@ export async function status(actionArguments: StatusActionArguments) {
         ]
       ])
     }
-    if (actionArguments.fetchPackageInfo) {
+    if (actionArguments.fetchPackageInfo && ultimatePoll?.result.uploadSummary?.packageInfo) {
       summary.addHeading('Package Information', 4).addTable([
         [
           { data: 'Stale', header: true },

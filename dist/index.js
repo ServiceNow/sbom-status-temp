@@ -31220,6 +31220,7 @@ async function status(actionArguments) {
             core.warning('Additional vulnerability or package intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.');
             doWaitForAdditionalInfo = false;
             alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = true;
+            processingComplete = true;
             break;
         }
         let haltingCondition = (results.result.uploadStatus === 'processed' && !doWaitForAdditionalInfo) ||
@@ -31265,7 +31266,7 @@ async function status(actionArguments) {
                 `${ultimatePoll?.result?.uploadSummary?.components?.total}`
             ]
         ]);
-        if (actionArguments.fetchVulnerabilityInfo) {
+        if (actionArguments.fetchVulnerabilityInfo && ultimatePoll?.result.uploadSummary?.vulnerabilityInfo) {
             summary.addHeading('Vulnerability Information', 4).addTable([
                 [
                     { data: 'Critical', header: true },
@@ -31283,7 +31284,7 @@ async function status(actionArguments) {
                 ]
             ]);
         }
-        if (actionArguments.fetchPackageInfo) {
+        if (actionArguments.fetchPackageInfo && ultimatePoll?.result.uploadSummary?.packageInfo) {
             summary.addHeading('Package Information', 4).addTable([
                 [
                     { data: 'Stale', header: true },
