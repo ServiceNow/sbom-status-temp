@@ -31297,7 +31297,11 @@ async function status(actionArguments) {
                 ]
             ]);
         }
-        await summary.write();
+        let rawApiResponse = `\`\`\`json
+    ${JSON.stringify(ultimatePoll?.result.uploadSummary, null, 2)}
+    \`\`\`
+    `;
+        await summary.addDetails('API Response', rawApiResponse).write();
         if (!doWaitForAdditionalInfo) {
             await core.summary
                 .addSeparator()
