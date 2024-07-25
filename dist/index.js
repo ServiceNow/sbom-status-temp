@@ -31217,7 +31217,8 @@ async function status(actionArguments) {
         if (results.result.status === 'error') {
             throw new Error(`An error occurred: ${JSON.stringify(results.result, null, 2)}`);
         }
-        if (results.result.additionalInfoStatus === 'not_requested' &&
+        if (results.result.uploadStatus === 'processed' &&
+            results.result.additionalInfoStatus === 'not_requested' &&
             doWaitForAdditionalInfo &&
             !alreadyEmittedAdditionalIntelligenceDiscrepancyWarning) {
             core.warning('Additional vulnerability or package intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.');
@@ -31297,8 +31298,7 @@ async function status(actionArguments) {
                 ]
             ]);
         }
-        let rawApiResponse = `\`\`\`json\n${JSON.stringify(ultimatePoll?.result.uploadSummary)}\n\`\`\``;
-        await summary.addDetails('API Response', rawApiResponse).write();
+        await summary.write();
         if (!doWaitForAdditionalInfo) {
             await core.summary
                 .addSeparator()

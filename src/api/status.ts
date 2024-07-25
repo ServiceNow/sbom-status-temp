@@ -57,6 +57,7 @@ export async function status(actionArguments: StatusActionArguments) {
     }
 
     if (
+      results.result.uploadStatus === 'processed' &&
       results.result.additionalInfoStatus === 'not_requested' &&
       doWaitForAdditionalInfo &&
       !alreadyEmittedAdditionalIntelligenceDiscrepancyWarning
@@ -152,8 +153,7 @@ export async function status(actionArguments: StatusActionArguments) {
       ])
     }
 
-    let rawApiResponse = `\`\`\`json\n${JSON.stringify(ultimatePoll?.result.uploadSummary)}\n\`\`\``
-    await summary.addDetails('API Response', rawApiResponse).write()
+    await summary.write()
 
     if (!doWaitForAdditionalInfo) {
       await core.summary
