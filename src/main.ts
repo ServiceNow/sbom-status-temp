@@ -13,6 +13,7 @@ export var process: NodeJS.Process
  */
 export async function run(): Promise<void> {
   try {
+    console.log("Hello Sourav")
     const actionArguments = setup()
     await validate(actionArguments, SchemaType.action_inputs)
 
