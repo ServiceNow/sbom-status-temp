@@ -5,6 +5,7 @@ export interface StatusActionArguments {
   statusAttemptInterval: number
   fetchPackageInfo: boolean
   fetchVulnerabilityInfo: boolean
+  fetchLicenseInfo: boolean
 }
 
 export interface ActionSecretArguments {
@@ -30,6 +31,7 @@ export interface StatusApiUploadSummaryResponseBody {
   components?: StatusApiComponentsResponseBody
   vulnerabilityInfo?: StatusApiVulnerabilityInfoResponseBody
   packageInfo?: StatusApiPackageInfoResponseBody
+  licenseInfo?: StatusApiLicenseInfoResponseBody
 }
 
 export interface StatusApiComponentsResponseBody {
@@ -49,4 +51,12 @@ export interface StatusApiVulnerabilityInfoResponseBody {
 export interface StatusApiPackageInfoResponseBody {
   stale: number
   abandoned: number
+}
+
+export interface StatusApiLicenseInfoResponseBody {
+  permitted: number
+  banned: number
+  restricted: number
+  classification_required: number
+  unresolved: number
 }

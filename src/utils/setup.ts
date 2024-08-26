@@ -38,8 +38,9 @@ export function _actionArguments(): StatusActionArguments {
     secrets: _secretArguments(),
     fetchPackageInfo: core.getInput('fetchPackageInfo') === 'true',
     fetchVulnerabilityInfo: core.getInput('fetchVulnerabilityInfo') === 'true',
+    fetchLicenseInfo: core.getInput('fetchLicenseInfo') === 'true',
     maxStatusPollAttempts,
     statusAttemptInterval,
     bomRecordId
-  }
+  } as StatusActionArguments
 }
