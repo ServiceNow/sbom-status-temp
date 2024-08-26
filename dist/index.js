@@ -31221,7 +31221,7 @@ async function status(actionArguments) {
             results.result.additionalInfoStatus === 'not_requested' &&
             doWaitForAdditionalInfo &&
             !alreadyEmittedAdditionalIntelligenceDiscrepancyWarning) {
-            core.warning('Additional vulnerability or package intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.');
+            core.warning('Additional vulnerability, package or license intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.');
             doWaitForAdditionalInfo = false;
             alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = true;
         }
@@ -31293,8 +31293,26 @@ async function status(actionArguments) {
                     { data: 'Abandoned', header: true }
                 ],
                 [
-                    `${ultimatePoll?.result?.uploadSummary?.packageInfo?.abandoned}`,
+                    `${ultimatePoll?.result?.uploadSummary?.packageInfo?.stale}`,
                     `${ultimatePoll?.result?.uploadSummary?.packageInfo?.abandoned}`
+                ]
+            ]);
+        }
+        if (actionArguments.fetchLicenseInfo && ultimatePoll?.result.uploadSummary?.licenseInfo) {
+            summary.addHeading('License Information', 4).addTable([
+                [
+                    { data: 'Permitted', header: true },
+                    { data: 'Banned', header: true },
+                    { data: 'Restricted', header: true },
+                    { data: 'Classification Required', header: true },
+                    { data: 'Unresolved', header: true }
+                ],
+                [
+                    `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.permitted}`,
+                    `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.banned}`,
+                    `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.restricted}`,
+                    `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.classification_required}`,
+                    `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.unresolved}`
                 ]
             ]);
         }
@@ -31302,7 +31320,7 @@ async function status(actionArguments) {
         if (!doWaitForAdditionalInfo) {
             await core.summary
                 .addSeparator()
-                .addQuote('ℹ️ If the SBOM was uploaded to ServiceNow via the SBOM Upload Action, additional package or vulnerability intelligence information can be requested. The SBOM Status API can retrieve the associated package or vulnerability information if the fetchPackageInfo or fetchVulnerabilityInfo action inputs are set to true.')
+                .addQuote('ℹ️ If the SBOM was uploaded to ServiceNow via the SBOM Upload Action, additional package, vulnerability or license intelligence information can be requested. The SBOM Status API can retrieve the associated package, vulnerability or license information if the fetchPackageInfo, fetchVulnerabilityInfo or fetchLicenseInfo action inputs are set to true.')
                 .write();
         }
     }
@@ -31374,6 +31392,7 @@ dotenv_1.default.config();
  */
 async function run() {
     try {
+        console.log('Hello, Sourav!');
         const actionArguments = (0, setup_1.setup)();
         await (0, validate_1.validate)(actionArguments, schemas_1.SchemaType.action_inputs);
         let statusOperationResponseObject = await (0, status_1.status)(actionArguments);
@@ -31495,6 +31514,7 @@ function _actionArguments() {
         secrets: _secretArguments(),
         fetchPackageInfo: core.getInput('fetchPackageInfo') === 'true',
         fetchVulnerabilityInfo: core.getInput('fetchVulnerabilityInfo') === 'true',
+        fetchLicenseInfo: core.getInput('fetchLicenseInfo') === 'true',
         maxStatusPollAttempts,
         statusAttemptInterval,
         bomRecordId
@@ -34305,7 +34325,7 @@ module.exports = JSON.parse('{"name":"dotenv","version":"16.4.5","description":"
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"maxStatusPollAttempts":{"type":"number","minimum":0,"maximum":5},"statusAttemptInterval":{"type":"number","minimum":5000},"bomRecordId":{"type":"string","minLength":1},"fetchPackageInfo":{"type":"boolean"},"fetchVulnerabilityInfo":{"type":"boolean"},"secrets":{"required":["snSbomUser","snSbomPassword","snInstanceUrl"],"type":"object","properties":{"snSbomUser":{"type":"string","minLength":1},"snSbomPassword":{"type":"string","minLength":1},"snInstanceUrl":{"type":"string","minLength":1}}}},"required":["bomRecordId","maxStatusPollAttempts","statusAttemptInterval"],"additionalProperties":false}');
+module.exports = JSON.parse('{"$schema":"http://json-schema.org/draft-07/schema#","type":"object","properties":{"maxStatusPollAttempts":{"type":"number","minimum":0,"maximum":5},"statusAttemptInterval":{"type":"number","minimum":5000},"bomRecordId":{"type":"string","minLength":1},"fetchPackageInfo":{"type":"boolean"},"fetchVulnerabilityInfo":{"type":"boolean"},"fetchLicenseInfo":{"type":"boolean"},"secrets":{"required":["snSbomUser","snSbomPassword","snInstanceUrl"],"type":"object","properties":{"snSbomUser":{"type":"string","minLength":1},"snSbomPassword":{"type":"string","minLength":1},"snInstanceUrl":{"type":"string","minLength":1}}}},"required":["bomRecordId","maxStatusPollAttempts","statusAttemptInterval"],"additionalProperties":false}');
 
 /***/ })
 

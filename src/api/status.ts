@@ -63,7 +63,7 @@ export async function status(actionArguments: StatusActionArguments) {
       !alreadyEmittedAdditionalIntelligenceDiscrepancyWarning
     ) {
       core.warning(
-        'Additional vulnerability or package intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.'
+        'Additional vulnerability, package or license intelligence was requested; however, the API request that uploaded the SBOM document did not request additional information.'
       )
       doWaitForAdditionalInfo = false
       alreadyEmittedAdditionalIntelligenceDiscrepancyWarning = true
@@ -147,8 +147,26 @@ export async function status(actionArguments: StatusActionArguments) {
           { data: 'Abandoned', header: true }
         ],
         [
-          `${ultimatePoll?.result?.uploadSummary?.packageInfo?.abandoned}`,
+          `${ultimatePoll?.result?.uploadSummary?.packageInfo?.stale}`,
           `${ultimatePoll?.result?.uploadSummary?.packageInfo?.abandoned}`
+        ]
+      ])
+    }
+    if (actionArguments.fetchLicenseInfo && ultimatePoll?.result.uploadSummary?.licenseInfo) {
+      summary.addHeading('License Information', 4).addTable([
+        [
+          { data: 'Permitted', header: true },
+          { data: 'Banned', header: true },
+          { data: 'Restricted', header: true },
+          { data: 'Classification Required', header: true },
+          { data: 'Unresolved', header: true }
+        ],
+        [
+          `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.permitted}`,
+          `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.banned}`,
+          `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.restricted}`,
+          `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.classification_required}`,
+          `${ultimatePoll?.result?.uploadSummary?.licenseInfo?.unresolved}`
         ]
       ])
     }
@@ -159,7 +177,7 @@ export async function status(actionArguments: StatusActionArguments) {
       await core.summary
         .addSeparator()
         .addQuote(
-          'ℹ️ If the SBOM was uploaded to ServiceNow via the SBOM Upload Action, additional package or vulnerability intelligence information can be requested. The SBOM Status API can retrieve the associated package or vulnerability information if the fetchPackageInfo or fetchVulnerabilityInfo action inputs are set to true.'
+          'ℹ️ If the SBOM was uploaded to ServiceNow via the SBOM Upload Action, additional package, vulnerability or license intelligence information can be requested. The SBOM Status API can retrieve the associated package, vulnerability or license information if the fetchPackageInfo, fetchVulnerabilityInfo or fetchLicenseInfo action inputs are set to true.'
         )
         .write()
     }

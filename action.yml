@@ -28,6 +28,9 @@ inputs:
   fetchVulnerabilityInfo:
     description: 'Wait for additional vulnerability information.'
     required: false
+  fetchLicenseInfo:
+    description: 'Wait for additional license classification information.'
+    required: false
 
 outputs:
   results:

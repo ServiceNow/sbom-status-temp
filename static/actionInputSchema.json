@@ -21,6 +21,9 @@
     "fetchVulnerabilityInfo": {
       "type": "boolean"
     },
+    "fetchLicenseInfo": {
+      "type": "boolean"
+    },
     "secrets": {
       "required": ["snSbomUser", "snSbomPassword", "snInstanceUrl"],
       "type": "object",
